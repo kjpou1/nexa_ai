@@ -1,22 +1,12 @@
-# BASIC_ALEXA_SKILL_TEMPLATE
+# Nexa - Custom AI-Powered Alexa Skill
 
-This is a foundational Python template for developing Alexa skills using Flask-Ask.
-
-> [!NOTE] 
-> To get this project to work, you need the following:
-> - use Python version 3.9.6
-> - install Flask-Ask from the specific GitHub commit using the following command:
-> 
-> ```bash
-> pip install git+https://github.com/johnwheeler/flask-ask.git@8fa6aa052a8a4b5273cbcceb48e926b41dbe8a32
-> ```
-> 
-> - use Flask version 2.3.0.
+Nexa is a customizable, AI-powered Alexa skill using Python and Flask-Ask. It leverages artificial intelligence to enhance query processing and response generation, providing a sophisticated personal assistant experience. The name "Nexa" reflects the next generation of AI-powered assistants, emphasizing innovation and forward-thinking technology. This project offers a robust foundation for creating advanced skills with efficient request handling and scalable deployment.
 
 ## Table of Contents
 
-- [BASIC\_ALEXA\_SKILL\_TEMPLATE](#basic_alexa_skill_template)
+- [Nexa - Custom AI-Powered Alexa Skill](#nexa---custom-ai-powered-alexa-skill)
   - [Table of Contents](#table-of-contents)
+  - [Special Environment Requirements](#special-environment-requirements)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Command Line Arguments](#command-line-arguments)
@@ -26,17 +16,29 @@ This is a foundational Python template for developing Alexa skills using Flask-A
     - [Shell Script Examples](#shell-script-examples)
     - [Running the Shell Script](#running-the-shell-script)
   - [Skill Testing](#skill-testing)
-    - [Testing MyCustomIntent](#testing-mycustomintent)
+    - [Testing NexaIntent](#testing-nexaintent)
   - [License](#license)
     - [Notes:](#notes)
+
+## Special Environment Requirements
+
+To get this project to work, you need the following:
+- Use Python version 3.9.6
+- Install Flask-Ask from the specific GitHub commit using the following command:
+
+```bash
+pip install git+https://github.com/johnwheeler/flask-ask.git@8fa6aa052a8a4b5273cbcceb48e926b41dbe8a32
+```
+
+- Use Flask version 2.3.0.
 
 ## Installation
 
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/yourusername/project_name.git
-    cd project_name
+    git clone https://github.com/kjpou1/nexa_ai.git
+    cd nexa_ai
     ```
 
 2. **Create and activate a virtual environment:**
@@ -68,9 +70,9 @@ To run the Alexa skill, use the provided `run.py` script with appropriate comman
 
 The following command-line arguments can be used:
 
-- `--server` or `-s`: Specify the server host (default: `127.0.0.1`).
-- `--port` or `-p`: Specify the server port (default: `5000`).
-- `--intent` or `-i`: Specify the intent name to be handled dynamically (default: `MyCustomIntent`).
+- `--server` or `-s`: Specify the server host (default: `0.0.0.0`).
+- `--port` or `-p`: Specify the server port (default: `8045`).
+- `--intent` or `-i`: Specify the intent name to be handled dynamically (default: `NexaIntent`).
 
 ### Examples
 
@@ -83,7 +85,7 @@ python run.py
 To run the program with a specified host, port, and intent:
 
 ```bash
-python run.py --server 127.0.0.1 --port 5000 --intent MyCustomIntent
+python run.py --server 0.0.0.0 --port 8045 --intent NexaIntent
 ```
 
 ## Configuration
@@ -93,9 +95,9 @@ The configuration settings are managed through environment variables and can be 
 Example `.env` file:
 
 ``` 
-SERVER_HOST=127.0.0.1
-SERVER_PORT=5000
-INTENT=MyCustomIntent
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8045
+INTENT=NexaIntent
 DEBUG=True
 ```
 
@@ -131,7 +133,7 @@ To run the script:
 
 ## Skill Testing
 
-### Testing MyCustomIntent
+### Testing NexaIntent
 
 To test the dynamically specified intent, you can use the Alexa Developer Console. 
 
@@ -143,6 +145,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ### Notes:
 
-1. **Project Name**: Ensure to replace `project_name` with the actual name of your project in the clone command.
-2. **Intent Testing**: The curl command and example response are illustrative. Actual testing may require interaction with the Alexa developer console or an Alexa-enabled device.
-3. **Environment Configuration**: The `.env` file should reflect all environment variables used within the project.
+1. **Environment Configuration**: The `.env` file should reflect all environment variables used within the project.
+
+---
