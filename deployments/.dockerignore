@@ -1,0 +1,11 @@
+# deployments/.dockerignore
+
+# Ignore the virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.git
