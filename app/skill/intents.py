@@ -4,6 +4,8 @@ from flask import Blueprint, render_template
 from flask_ask import Ask, question, statement
 
 from app.config.config import Config
+from app.services.intents_service import IntentsService
+from app.services.response_service import ResponseService
 
 # Create a Blueprint named "api"
 api_bp = Blueprint("api", __name__)
@@ -25,55 +27,52 @@ def create_intent_handlers(app):
     # Define the launch request handler
     @ask.launch
     def launch():
-        # Render the welcome_text template from templates.yaml
-        welcome_text = render_template("welcome_text")
-        return question(welcome_text)
+        response_payload = IntentsService.get_launch_message()
+        return ResponseService.handle_response(response_payload)
 
     # Define the fallback intent handler
     @ask.intent("AMAZON.FallbackIntent")
     def fallback():
-        # Render the ask_name_reprompt template from templates.yaml
-        reprompt_text = render_template("ask_name_reprompt")
-        return question(reprompt_text)
+        response_payload = IntentsService.get_fallback_message()
+        return ResponseService.handle_response(response_payload)
 
-    # # Define the custom intent handler dynamically
+    # Define the custom intent handler dynamically
     @ask.intent(config.intent)
-    def custom_intent(firstname):
-        if firstname is None:
-            # No name given, prompt user to provide their name
-            ask_name_text = render_template("ask_name")
-            return question(ask_name_text)
-        # Render the hello template with the provided firstname
-        response_text = render_template("hello", firstname=firstname)
-        return statement(response_text).simple_card("Hello", response_text)
+    def custom_intent(query):
+        user_request = query
+        payload = {"request": user_request}
+        response_data = IntentsService.handle_request(payload)
+        return ResponseService.handle_response(response_data)
 
     # Define a handler for another intent (e.g., GoodbyeIntent)
     @ask.intent("GoodbyeIntent")
     def goodbye():
-        # Placeholder for GoodbyeIntent logic
-        goodbye_text = render_template("goodbye")
-        return statement(goodbye_text)
+        response_payload = IntentsService.get_goodbye_message()
+        return ResponseService.handle_response(response_payload)
+
+    # Define a handler for session ended request handler
+    @ask.session_ended
+    def session_ended():
+        response_payload = IntentsService.get_session_ended_message()
+        return ResponseService.handle_response(response_payload)
 
     # Define a handler for another custom intent (e.g., HelpIntent)
     @ask.intent("AMAZON.HelpIntent")
-    def help():
-        # Placeholder for HelpIntent logic
-        help_text = render_template("help")
-        return question(help_text)
+    def help_intent():
+        response_payload = IntentsService.get_help_message()
+        return ResponseService.handle_response(response_payload)
 
     # Define a handler for a custom intent (e.g., StopIntent)
     @ask.intent("AMAZON.StopIntent")
     def stop():
-        # Placeholder for StopIntent logic
-        stop_text = render_template("stop")
-        return statement(stop_text)
+        response_payload = IntentsService.get_stop_message()
+        return ResponseService.handle_response(response_payload)
 
     # Define a handler for a custom intent (e.g., CancelIntent)
     @ask.intent("AMAZON.CancelIntent")
     def cancel():
-        # Placeholder for CancelIntent logic
-        cancel_text = render_template("cancel")
-        return statement(cancel_text)
+        response_payload = IntentsService.get_cancel_message()
+        return ResponseService.handle_response(response_payload)
 
 
 def register_skill_intents(app):
