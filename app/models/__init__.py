@@ -1,5 +1,7 @@
 # app/models/__init__.py
-from .singleton import SingletonMeta
+from .ai.model_config import ModelConfig
+from .ai.model_configs import ModelConfigs
 from .command_line_args import CommandLineArgs
+from .singleton import SingletonMeta
 
-__all__ = ['SingletonMeta', 'CommandLineArgs']
+__all__ = ["SingletonMeta", "CommandLineArgs", "ModelConfig", "ModelConfigs"]

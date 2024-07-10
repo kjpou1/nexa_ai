@@ -1,0 +1,32 @@
+[
+    {
+        "description": "Llama2 Locally",
+        "base_url": "http://localhost:11434/v1",
+        "api_key": "ollama",
+        "model": "llama2"
+    },
+    {
+        "description": "Mistral Locally",
+        "base_url": "http://localhost:11434/v1",
+        "api_key": "ollama",
+        "model": "mistral"
+    },
+    {
+        "description": "Llama2 Serverless",
+        "base_url": "https://api.together.xyz",
+        "api_key": "TOGETHER_API_KEY",
+        "model": "togethercomputer/llama-2-13b-chat"
+    },
+    {
+        "description": "Mixtral Serverless",
+        "base_url": "https://api.together.xyz",
+        "api_key": "TOGETHER_API_KEY",
+        "model": "mistralai/Mixtral-8x7B-Instruct-v0.1"
+    },
+    {
+        "description": "OpenAI Serverless",
+        "base_url": "https://api.openai.com/v1",
+        "api_key": "OPENAI_API_KEY",
+        "model": "gpt-3.5-turbo-1106"
+    }
+]

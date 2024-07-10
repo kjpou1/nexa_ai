@@ -138,3 +138,4 @@ test_*
 
 # generated files
 data_files
+config/nexa_ai_configs.json

@@ -1,15 +1,30 @@
-welcome_text: Welcome to the Hello World Alexa Skill. You can say your name, or, how are you?
+launch_prompt: introduce myself as Nexa AI skill and how I can help. fit response in 50 characters or less and form it as a question.  Make sure to include something about your personality trait.
 
-hello: Hello {{ firstname }}. Great job on running your first Alexa skill.
+fallback_prompt: The user input was not understood. Provide a response asking the user to repeat their request.
 
-ask_name: What is your name?
+goodbye_prompt: The user is ending the session. Provide a goodbye message.
 
-ask_name_reprompt: Can you tell me your name?
+help_prompt: The user needs help. Provide a response explaining the various tasks you can assist with, such as setting reminders, providing weather updates, and more.  keep response under 100 words
 
-goodbye: Thank you for using the Hello World Alexa Skill. Goodbye!
+stop_prompt: The user has stopped their request. Provide a response acknowledging that the skill was stopped and offering further assistance.
 
-help: You can say things like, 'What is your name?' or 'How are you?' How can I assist you today?
+cancel_prompt: The user has canceled their request. Provide a response acknowledging the cancellation and offering further assistance.
 
-stop: The skill is stopping now. Have a great day!
+session_ended_prompt: The session has ended. Provide a response acknowledging the ending of the session and offering further assistance.
 
-cancel: Your request has been canceled. How can I assist you further?
+query_prompt: |
+  Given the user's query request: "{{ query }}", interpret the intent and provide a comprehensive response. The user's request could have been phrased in any of the following ways:
+
+  1. "search {query}"
+  2. "what is a {query}"
+  3. "how do I {query}"
+  4. "what is {query}"
+  5. "get {query}"
+  6. "I want to know about {query}"
+  7. "look up {query}"
+  8. "search for {query}"
+  9. "look into {query}"
+  10. "tell me about {query}"
+
+  Considering these variations, generate a response that accurately addresses the user's query, taking into account the context implied by each phrasing.
+  Keep the answer less that 100 words

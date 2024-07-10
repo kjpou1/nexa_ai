@@ -1,20 +1,12 @@
-import asyncio
 import logging
-import os
 
 from flask import Flask
-from flask_ask import Ask
 from werkzeug.serving import run_simple
 
 from app.config.config import Config
 from app.models.command_line_args import CommandLineArgs
+from app.services.ai.ai_service_instance import AIServiceSingleton
 from app.skill.intents import api_bp, register_skill_intents
-
-
-class TestingConfig(Config):
-    DATABASE_URI = "sqlite:///:memory:"
-    TESTING = True
-    EXPLAIN_TEMPLATE_LOADING = True
 
 
 class Host:
@@ -45,10 +37,13 @@ class Host:
         self.logger = logging.getLogger(__name__)
         # Initialize Flask app
         self.app = Flask(__name__)
-        # # Register blueprints
+        # Register blueprints
         self.app.register_blueprint(api_bp)
 
         register_skill_intents(self.app)
+
+        # Initialize AIService instance
+        AIServiceSingleton("config/nexa_ai_configs.json")
 
     def run(self):
         # Method to perform the main logic: Start Flask server
@@ -60,7 +55,8 @@ class Host:
         )
 
 
+# Example usage for running the script directly
 # if __name__ == "__main__":
-#     args = CommandLine.parse_arguments()
+#     args = CommandLineArgs.parse_arguments()
 #     host = Host(args)
 #     host.run()
