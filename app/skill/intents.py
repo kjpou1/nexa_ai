@@ -1,7 +1,10 @@
+import json
 import logging
+from collections import defaultdict
+from typing import Any, Dict, Optional
 
-from flask import Blueprint, render_template
-from flask_ask import Ask, question, statement
+from flask import Blueprint
+from flask_ask import Ask
 
 from app.config.config import Config
 from app.services.intents_service import IntentsService
@@ -73,6 +76,39 @@ def create_intent_handlers(app):
     def cancel():
         response_payload = IntentsService.get_cancel_message()
         return ResponseService.handle_response(response_payload)
+
+    # Define a handler for weather condition (e.g., CancelIntent)
+    @ask.intent("AMAZON.SearchAction<object@WeatherForecast>")
+    def weather_forecast():
+        request = ask.request
+        intent = request.intent
+        payload = {"request": intent.slots}
+        response_data = IntentsService.handle_weather_forecast(payload)
+        return ResponseService.handle_response(response_data)
+
+    @ask.intent("AMAZON.SearchAction<object@WeatherForecast[weatherCondition]>")
+    def weather_condition():
+        request = ask.request
+        intent = request.intent
+        payload = {"request": intent.slots}
+        response_data = IntentsService.handle_weather_forecast(payload)
+        return ResponseService.handle_response(response_data)
+
+    @ask.intent("AMAZON.SearchAction<object@WeatherForecast[temperature]>")
+    def weather_temperature():
+        request = ask.request
+        intent = request.intent
+        payload = {"request": intent.slots}
+        response_data = IntentsService.handle_weather_forecast(payload)
+        return ResponseService.handle_response(response_data)
+
+    @ask.intent("WeatherIntent")
+    def weather_intent():
+        request = ask.request
+        intent = request.intent
+        payload = {"request": intent.slots}
+        response_data = IntentsService.handle_weather_forecast(payload)
+        return ResponseService.handle_response(response_data)
 
 
 def register_skill_intents(app):

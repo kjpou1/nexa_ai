@@ -7,16 +7,16 @@ from app.host import Host
 logger = logging.getLogger(__name__)
 
 
-async def main_async():
+# async def main_async():
 
-    try:
-        args = CommandLine.parse_arguments()
-        # Create an instance of Host with parsed arguments
-        instance = Host(args)
-        # Run the async main function with the parsed arguments
-        await instance.run_async()
-    except ValueError as e:
-        logger.error("Error: %s", e)
+#     try:
+#         args = CommandLine.parse_arguments()
+#         # Create an instance of Host with parsed arguments
+#         instance = Host(args)
+#         # Run the async main function with the parsed arguments
+#         await instance.run_async()
+#     except ValueError as e:
+#         logger.error("Error: %s", e)
 
 
 def main():

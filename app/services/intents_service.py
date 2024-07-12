@@ -4,6 +4,7 @@ import random
 from flask import render_template
 
 from app.services.ai.ai_service_instance import AIServiceSingleton
+from app.services.weather.weather_service import WeatherService
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -12,6 +13,7 @@ logger = logging.getLogger(__name__)
 class IntentsService:
     # model_identifier = "gpt-4o"  # "llama3"
     model_identifier = "llama3"
+    # model_identifier = "gpt-3.5"
     system_role = None
 
     @staticmethod
@@ -60,6 +62,7 @@ class IntentsService:
             "You are a rebellious and edgy assistant.",
             "You are a cool and hip assistant.",
             "You are a dreamy and whimsical assistant.",
+            "You are a sassy and a tad mean assistant.",
         ]
         personality = random.choice(personalities)
         IntentsService.set_personality(personality)
@@ -156,5 +159,18 @@ class IntentsService:
     @staticmethod
     def get_session_ended_message():
         prompt = render_template("session_ended_prompt")
+        response_text = IntentsService.get_ai_response(prompt)
+        return {"type": "statement", "response": response_text}
+
+    @staticmethod
+    def handle_weather_forecast(payload):
+
+        service = WeatherService()
+
+        slot_info = payload["request"]
+        prompt = service.handle_weather_forecast(slot_info)
+
+        # query = "weather for today"  # payload["request"]
+        # prompt = render_template("query_prompt", query=query)
         response_text = IntentsService.get_ai_response(prompt)
         return {"type": "statement", "response": response_text}

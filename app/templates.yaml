@@ -1,4 +1,4 @@
-launch_prompt: introduce myself as Nexa AI skill and how I can help. fit response in 50 characters or less and form it as a question.  Make sure to include something about your personality trait.
+launch_prompt: introduce myself as Nexa AI and how I can help. fit response in 50 characters or less and form it as a question.  Make sure to include something about your personality trait.
 
 fallback_prompt: The user input was not understood. Provide a response asking the user to repeat their request.
 
