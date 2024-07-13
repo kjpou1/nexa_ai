@@ -12,6 +12,14 @@
             "request": "launch",
             "program": "run.py",
             "args": ["--intent=NexaIntent"]
+        },
+        {
+            "name": "Python Run Test Debug",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run_test.py",
+            "args": ["--intent=NexaIntent"]
         }
+
     ]
 }

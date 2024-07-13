@@ -2,6 +2,10 @@
 
 Nexa is a customizable, AI-powered Alexa skill using Python and Flask-Ask. It leverages artificial intelligence to enhance query processing and response generation, providing a sophisticated personal assistant experience. The name "Nexa" reflects the next generation of AI-powered assistants, emphasizing innovation and forward-thinking technology. This project offers a robust foundation for creating advanced skills with efficient request handling and scalable deployment.
 
+modeled after:  https://github.com/alexa-samples/amazon-kendra-skill-sample-python
+
+
+
 ## Table of Contents
 
 - [Nexa - Custom AI-Powered Alexa Skill](#nexa---custom-ai-powered-alexa-skill)
