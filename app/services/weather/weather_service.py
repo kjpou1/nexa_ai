@@ -53,14 +53,21 @@ class WeatherService:
             lon = geocode_data.get("lon")
 
         # Fetch weather data from OpenWeatherMap API
-        weather_data = self.api.get_weather(lat, lon)
-        # Create OpenAI prompt to format the weather information
-        # openai_prompt = WeatherHelpers.create_openai_prompt(
-        #     weather_params, weather_data=weather_data
+        # weather_data = self.api.get_weather(lat, lon)
+        # # Create OpenAI prompt to format the weather information
+        # # openai_prompt = WeatherHelpers.create_openai_prompt(
+        # #     weather_params, weather_data=weather_data
+        # # )
+        # date = "2024-07-11"
+        # openai_prompt = WeatherHelpers.generate_detailed_prompt(
+        #     weather_data=weather_data, date=date
         # )
-        date = "2024-07-11"
-        openai_prompt = WeatherHelpers.generate_prompt(
-            weather_data=weather_data, date=date
+        # Fetch weather data from OpenWeatherMap API
+        weather_overview = self.api.get_overview(lat, lon)
+
+        openai_prompt = WeatherHelpers.generate_overview_prompt(
+            overview_data=weather_overview
         )
+
         # Return the OpenAI prompt
         return openai_prompt

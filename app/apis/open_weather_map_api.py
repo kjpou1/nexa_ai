@@ -16,6 +16,7 @@ class OpenWeatherMapAPI:
 
     GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
     WEATHER_URL = "https://api.openweathermap.org/data/3.0/onecall"
+    OVERVIEW_URL = "https://api.openweathermap.org/data/3.0/onecall/overview"
 
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -31,7 +32,7 @@ class OpenWeatherMapAPI:
         Returns:
         Dict[str, Any]: Geocoded location data.
         """
-        params = {"q": location, "units": self.config.units, "appid": self.api_key}
+        params = {"q": location, "limit": 1, "appid": self.api_key}
         try:
             headers = {"Content-Type": "application/json"}
             response = requests.get(
@@ -55,6 +56,11 @@ class OpenWeatherMapAPI:
     def get_weather(self, lat: float, lon: float) -> Dict[str, Any]:
         """
         Fetch weather data for a specified latitude and longitude.
+
+        One Call API 3.0 is based on the proprietary OpenWeather Model and
+        is updated every 10 minutes. Thus, in order to receive the most accurate
+        and up-to-date weather data, we recommend you request One Call API 3.0
+        every 10 minutes.
 
         Parameters:
         lat (float): Latitude.
@@ -80,3 +86,28 @@ class OpenWeatherMapAPI:
                 "Error fetching weather data from OpenWeatherMap", exc_info=True
             )
             raise e
+
+    def get_overview(self, lat: float, lon: float) -> Dict[str, Any]:
+        """
+        Get the weather overview data for the specified latitude and longitude.
+
+        Parameters:
+        lat (float): Latitude of the location.
+        lon (float): Longitude of the location.
+
+        Returns:
+        Dict[str, Any]: The weather overview data.
+        """
+        params = {
+            "lat": lat,
+            "lon": lon,
+            "appid": self.api_key,
+            "units": Config().units,
+        }
+        try:
+            response = requests.get(self.OVERVIEW_URL, params=params, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            logger.error("Error fetching weather overview data: %s", e, exc_info=True)
+            return {}

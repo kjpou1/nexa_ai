@@ -28,3 +28,25 @@ query_prompt: |
 
   Considering these variations, generate a response that accurately addresses the user's query, taking into account the context implied by each phrasing.
   Keep the answer less that 100 words
+
+units_metric: |
+  Make sure to use metric units for all temperatures and speeds.
+  Do not reference other units like miles or farenheight
+  Convert the meters to kilometers, wind speed to kilometers per hour and the degrees to readable headings such as "northwest" instead of abbreviations like "NW"
+
+units_imperial: |
+  Make sure to use imperial units for all temperatures and speeds.
+  Do not reference other units like meters, kilometers  or celcius
+  Convert the wind speed to miles per hour and the degrees to readable headings such as "northwest" instead of abbreviations like "NW"
+
+weather_overview: |
+  Provide the weather overview from the following overview details below: temperature, 
+  'feels like' temperature, wind speed, humidity, visibility.  
+  Present it in a manner true to yourself.  Ensure the information is both informative 
+  and actionable for the general public.  
+  {{ unit_instructions }}
+
+  keep response under 100 words
+
+  Overview Details:
+  Overview for {{ date }}\n"{{ overview }}"

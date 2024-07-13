@@ -3,7 +3,8 @@ import json
 import logging
 from typing import Any, Dict, Optional
 
-from app.apis.ip_resolver import IPResolver
+from flask import render_template
+
 from app.apis.open_weather_map_api import OpenWeatherMapAPI
 from app.config.config import Config
 
@@ -176,7 +177,7 @@ class WeatherHelpers:
         return prompt
 
     @staticmethod
-    def generate_prompt(weather_data: Dict[str, Any], date: str) -> str:
+    def generate_detailed_prompt(weather_data: Dict[str, Any], date: str) -> str:
         """Generate a detailed weather forecast prompt."""
         current = weather_data["current"]
         daily = weather_data["daily"][0]
@@ -245,8 +246,42 @@ class WeatherHelpers:
             # f"- Wind: {daily_wind_speed} m/s from {daily_wind_deg} degrees\n"
             # f"- Rain: {daily_rain} mm\n"
             # f"- UV Index: {daily_uvi}\n\n"
-            f"Make sure to use {Config().units} units for all temperatures and speeds.  Do not reference other units like miles or farenheight\n"
+            f"Make sure to use {Config().units} units for all temperatures and speeds.\n"
+            f"Do not reference other units like miles or farenheight\n"
+            f'Convert the wind speed to kilometers per hour and the degrees to readable headings such as "northwest" instead of abbreviations like "NW"'
             "Keep response under 100 words"
         )
 
         return prompt
+
+    @staticmethod
+    def generate_overview_prompt(overview_data: Dict[str, Any]) -> str:
+        """
+        Generate an OpenAI prompt for the weather overview using a template.
+
+        Parameters:
+        overview_data (Dict[str, Any]): Dictionary containing the weather overview data.
+
+        Returns:
+        str: OpenAI prompt string.
+        """
+        try:
+            # location =
+            date = overview_data.get("date", "unknown date")
+            units = Config().units
+            unit_instructions = render_template(f"units_{units}")
+            overview = overview_data.get(
+                "weather_overview", "No detailed overview available."
+            )
+            prompt = render_template(
+                "weather_overview",
+                date=date,
+                overview=overview,
+                unit_instructions=unit_instructions,
+            )
+
+            logger.info("Generated OpenAI overview prompt: %s", prompt)
+            return prompt
+        except Exception as e:
+            logger.error("Error generating overview prompt", exc_info=True)
+            raise e
