@@ -110,14 +110,6 @@ def create_intent_handlers(app):
         response_data = IntentsService.handle_weather_forecast(payload)
         return ResponseService.handle_response(response_data)
 
-    @ask.intent("COLTRANE_INTENT")
-    def huh_intent():
-        request = ask.request
-        intent = request.intent
-        payload = {"request": intent.slots}
-        response_data = IntentsService.handle_weather_forecast(payload)
-        return ResponseService.handle_response(response_data)
-
 
 def register_skill_intents(app):
     # Register intent handlers with the given Flask app
