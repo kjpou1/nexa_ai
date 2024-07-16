@@ -16,6 +16,7 @@ class Config(metaclass=SingletonMeta):
         load_dotenv()  # Load environment variables from .env file
         # Prevent re-initialization
         if not self._is_initialized:
+            self._is_initialized = True
             self._server = None
             self._port = None
             self._intent = None
@@ -24,6 +25,8 @@ class Config(metaclass=SingletonMeta):
             self._public_ip_info = None
             self._public_location = None
             self._units = Config.get("UNITS")
+            self._large_language_model = Config.get("LARGE_LANGUAGE_MODEL")
+            self._personality = Config.get("ASSISTANT_PERSONALITY")
             self.load_location()
 
     @classmethod
@@ -68,6 +71,14 @@ class Config(metaclass=SingletonMeta):
     def units(self):
         return self._units
 
+    @property
+    def large_language_model(self):
+        return self._large_language_model
+
+    @property
+    def personality(self):
+        return self._personality
+
     def set_server_host(self, host):
         self._server = host
 
@@ -76,6 +87,12 @@ class Config(metaclass=SingletonMeta):
 
     def set_intent(self, intent):
         self._intent = intent
+
+    def set_large_language_model(self, large_language_model):
+        self._large_language_model = large_language_model
+
+    def set_personality(self, personality):
+        self._personality = personality
 
     def load_location(self):
         self.logger.info("Retieving public facing information.")
