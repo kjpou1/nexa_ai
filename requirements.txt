@@ -9,6 +9,7 @@ click==8.1.7
 cryptography==42.0.8
 decorator==5.1.1
 distro==1.9.0
+duckduckgo_search==6.2.0
 exceptiongroup==1.2.1
 Flask==2.3.0
 Flask-Ask @ git+https://github.com/johnwheeler/flask-ask.git@8fa6aa052a8a4b5273cbcceb48e926b41dbe8a32
@@ -27,6 +28,7 @@ pycparser==2.22
 pydantic==2.8.2
 pydantic_core==2.20.1
 pyOpenSSL==24.1.0
+pyreqwest_impersonate==0.5.0
 python-dotenv==1.0.1
 PyYAML==6.0.1
 ratelim==0.1.6

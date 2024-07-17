@@ -50,3 +50,12 @@ weather_overview: |
 
   Overview Details:
   Overview for {{ date }}\n"{{ overview }}"
+
+web_search_overview: |
+  Provide an overview from the following overview details below: 
+  Present it in a manner true to yourself.
+  
+  keep response under 100 words
+
+  Overview Details:
+  Overview for {{ overview }}"  
