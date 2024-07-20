@@ -26,6 +26,7 @@ class ActionExecutorService:
         self.ai_service = AIServiceSingleton.get_instance()
         self.function_map = {
             "get_weather_forecast": self.weather_service.get_weather_forecast,
+            "get_weather_temperature": self.weather_service.get_weather_temperature,
             "ask_the_ai": self.ai_service.ask_the_ai,
             "web_search": self.web_service.web_search,
         }

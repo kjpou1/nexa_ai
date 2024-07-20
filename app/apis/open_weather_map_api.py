@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import Any, Dict
 
 import requests
@@ -17,6 +18,7 @@ class OpenWeatherMapAPI:
     GEOCODE_URL = "http://api.openweathermap.org/geo/1.0/direct"
     WEATHER_URL = "https://api.openweathermap.org/data/3.0/onecall"
     OVERVIEW_URL = "https://api.openweathermap.org/data/3.0/onecall/overview"
+    SUMMARY_URL = "https://api.openweathermap.org/data/3.0/onecall/day_summary"
 
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -110,4 +112,45 @@ class OpenWeatherMapAPI:
             return response.json()
         except requests.RequestException as e:
             logger.error("Error fetching weather overview data: %s", e, exc_info=True)
+            return {}
+
+    def get_summary(self, lat: float, lon: float, date: str = None) -> Dict[str, Any]:
+        """
+        Get the weather summary data for the specified latitude, longitude, and date.
+
+        Parameters:
+        lat (float): Latitude of the location.
+        lon (float): Longitude of the location.
+        date (str): Date for the weather summary in 'YYYY-MM-DD' format. Defaults to today's date if not provided.
+
+        Returns:
+        Dict[str, Any]: The weather summary data.
+        """
+        if date is None:
+            date = datetime.now().strftime("%Y-%m-%d")
+
+        # Validate the date format
+        try:
+            datetime.strptime(date, "%Y-%m-%d")
+        except ValueError as exc:
+            logger.error(
+                "Invalid date format: %s. Expected format is 'YYYY-MM-DD'.", date
+            )
+            raise ValueError(
+                "Invalid date format. Expected format is 'YYYY-MM-DD'."
+            ) from exc
+
+        params = {
+            "lat": lat,
+            "lon": lon,
+            "appid": self.api_key,
+            "units": self.config.units,
+            "date": date,
+        }
+        try:
+            response = requests.get(self.SUMMARY_URL, params=params, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            logger.error("Error fetching weather summary data: %s", e, exc_info=True)
             return {}

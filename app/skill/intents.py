@@ -99,7 +99,7 @@ def create_intent_handlers(app):
         request = ask.request
         intent = request.intent
         payload = {"request": intent.slots}
-        response_data = IntentsService.handle_weather_forecast(payload)
+        response_data = IntentsService.handle_weather_temperature(payload)
         return ResponseService.handle_response(response_data)
 
     @ask.intent("WeatherIntent")

@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 
 from flask import render_template
@@ -189,11 +190,11 @@ class WeatherHelpers:
         feels_like_temp = current["feels_like"]
         current_conditions = current["weather"][0]["description"]
         current_humidity = current["humidity"]
-        current_wind_speed = current["wind_speed"]
-        current_wind_deg = current["wind_deg"]
-        current_visibility = current["visibility"]
-        current_pressure = current["pressure"]
-        current_uvi = current["uvi"]
+        # current_wind_speed = current["wind_speed"]
+        # current_wind_deg = current["wind_deg"]
+        # current_visibility = current["visibility"]
+        # current_pressure = current["pressure"]
+        # current_uvi = current["uvi"]
 
         sunrise = datetime.datetime.fromtimestamp(daily["sunrise"]).strftime("%I:%M %p")
         sunset = datetime.datetime.fromtimestamp(daily["sunset"]).strftime("%I:%M %p")
@@ -202,10 +203,10 @@ class WeatherHelpers:
         daily_conditions = daily["weather"][0]["description"]
         daily_summary = daily.get("summary", "No summary available.")
         daily_humidity = daily["humidity"]
-        daily_wind_speed = daily["wind_speed"]
-        daily_wind_deg = daily["wind_deg"]
-        daily_rain = daily.get("rain", 0)
-        daily_uvi = daily["uvi"]
+        # daily_wind_speed = daily["wind_speed"]
+        # daily_wind_deg = daily["wind_deg"]
+        # daily_rain = daily.get("rain", 0)
+        # daily_uvi = daily["uvi"]
 
         hourly_forecast = []
         for hour in hourly:
@@ -284,4 +285,87 @@ class WeatherHelpers:
             return prompt
         except Exception as e:
             logger.error("Error generating overview prompt", exc_info=True)
+            raise e
+
+    @staticmethod
+    def generate_temperature_prompt(
+        current_data: Dict[str, Any], summary_data: Dict[str, Any]
+    ) -> str:
+        """
+        Generate an OpenAI prompt for the temperature forecast using a template.
+
+        Parameters:
+        summary_data (Dict[str, Any]): Dictionary containing the weather summary data.
+
+        Returns:
+        str: OpenAI prompt string.
+        """
+        try:
+            start_date = summary_data.get("date", "unknown date")
+            location = summary_data.get("location", "unknown location")
+            temperature = summary_data.get("temperature", "No temperature available")
+            units = Config().units
+            today = datetime.now().strftime(
+                "%A, %Y-%m-%d"
+            )  # Default to today's date if not provided
+            start_date = datetime.strptime(start_date, "%Y-%m-%d").strftime(
+                "%A, %Y-%m-%d"
+            )
+
+            unit_instructions = render_template(f"units_{units}")
+
+            prompt = None
+
+            if today == start_date:
+                # Get today's date
+                today_date = datetime.now().date()
+
+                # Find today's weather in the daily list by comparing date parts
+                today_weather = None
+                for day in current_data["daily"]:
+                    day_date = datetime.fromtimestamp(day["dt"], timezone.utc).date()
+                    if day_date == today_date:
+                        today_weather = day
+                        break
+
+                # Extract current temperature and feels-like temperature
+                current_temp = current_data["current"]["temp"]
+                feels_like_temp = current_data["current"]["feels_like"]
+
+                # Extract daily temperature information
+                if today_weather:
+                    min_temp = today_weather["temp"]["min"]
+                    max_temp = today_weather["temp"]["max"]
+                else:
+                    min_temp = max_temp = "N/A"
+                prompt = render_template(
+                    "weather_temperature_current",
+                    today=today,
+                    current=current_temp,
+                    feels_like=feels_like_temp,
+                    min=min_temp,
+                    max=max_temp,
+                    unit_instructions=unit_instructions,
+                )
+
+            else:
+                prompt = render_template(
+                    "weather_temperature",
+                    today=today,
+                    start_date=start_date,
+                    location=location,
+                    min=temperature["min"],
+                    max=temperature["max"],
+                    morning=temperature["morning"],
+                    afternoon=temperature["afternoon"],
+                    evening=temperature["evening"],
+                    night=temperature["night"],
+                    temperature=temperature,
+                    unit_instructions=unit_instructions,
+                )
+
+            logger.info("Generated OpenAI temperature prompt: %s", prompt)
+            return prompt
+        except Exception as e:
+            logger.error("Error generating temperature prompt", exc_info=True)
             raise e

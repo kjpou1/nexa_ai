@@ -51,9 +51,41 @@ weather_overview: |
   Overview Details:
   Overview for {{ date }}\n"{{ overview }}"
 
+weather_temperature: |
+  Today is {{ today }}, and the temperature data is for {{ start_date }}.
+  Please present the temperature relationship between these two dates that would be clear and useful for
+  a general audience, particularly in the context of presenting temperature data. This can be a representation such as 
+  'number of days from now', 'day of the week', 'tomorrow', 'yesterday', 'day after tomorrow', or 'next week on ...'.
+  Temperature data:
+  Min: {{ min }}
+  Max: {{ max }}
+  Morning: {{ morning }}
+  Afternoon: {{ afternoon }}
+  Evening: {{ evening }}
+  Night: {{ night }}
+  Please present this temperature information in a manner that is informative and actionable for the general public.
+  {{ unit_instructions }}
+  Keep response under 100 words.
+
+weather_temperature_current: |
+  Today is {{ today }}.
+
+  Provide the temperature from the following overview details below: Current Temperature, 
+  and 'feels like' temperature, Min, Max.
+
+  Temperature data:
+  Current: {{ current }}
+  Feels Like: {{ feels_like }}
+  Min: {{ min }}
+  Max: {{ max }}
+  
+  Please present this temperature information in a manner that is informative and actionable for the general public.
+  DO NOT PROVIDE ANY FUTURE INFORMATION NOT EVEN HALLUCINATIONS!!!  DO NOT EVEN HINT AT THE FUTURE.
+  {{ unit_instructions }}
+  Keep response under 100 words.
+  
 web_search_overview: |
-  Provide an overview from the following overview details below: 
-  Present it in a manner true to yourself.
+  Present the Overview Details below in a manner true to yourself and make mention that this was from the internet.
   
   keep response under 100 words
 

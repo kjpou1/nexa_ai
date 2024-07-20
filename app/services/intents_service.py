@@ -87,3 +87,10 @@ class IntentsService:
         intents_processor = IntentProcessorService()
         response_text = intents_processor.get_ai_response(prompt)
         return {"type": "statement", "response": response_text}
+
+    @staticmethod
+    def handle_weather_temperature(payload):
+        service = WeatherService()
+        slot_info = payload["request"]
+        intent_response = service.handle_weather_temperature(slot_info)
+        return {"type": "statement", "response": intent_response.details.data}
